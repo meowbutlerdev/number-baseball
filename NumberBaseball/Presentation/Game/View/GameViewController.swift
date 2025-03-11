@@ -25,8 +25,8 @@ class GameViewController {
             self?.requestUserInput()
         }
 
-        gameViewModel.onGameOver = { [weak self] in
-            self?.gameView.showGameClearMessage()
+        gameViewModel.onGameOver = { [weak self] attemptCount in
+            self?.gameView.showGameClearMessage(attemptCount: attemptCount)
             self?.showMainView()
         }
     }

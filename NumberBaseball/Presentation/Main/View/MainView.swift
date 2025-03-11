@@ -26,6 +26,7 @@ class MainView {
         print(Messages.MainView.gameStart)
     }
 
+    /// 게임 종료 메시지 출력
     func showExitMessage() {
         print(Messages.MainView.exit)
     }

@@ -3,22 +3,24 @@ import Foundation
 class GameViewModel {
     var onInvalidInput: (() -> Void)?
     var onStrikeAndBallCalculated: ((String) -> Void)?
-    var onGameOver: (() -> Void)?
+    var onGameOver: ((Int) -> Void)?
     var onNothingHint: (() -> Void)?
     var onStrikeAndBallHint: (((strike: Int, ball: Int)) -> Void)?
 
     private let generateNumberUseCase: GenerateAnswerUseCase
-    private let calculateStrikeAndBall: CalculateStrikeAndBallUseCase
+    private let calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase
     private var answer: [Int] = []
+    private var attemptCount = 0
 
     init(
         generateNumberUseCase: GenerateAnswerUseCase = DefaultGenerateAnswerUseCase(),
-        calculateStrikeAndBall: CalculateStrikeAndBallUseCase = DefaultCalculateStrikeAndBallUseCase()
+        calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase = DefaultCalculateStrikeAndBallUseCase()
     ) {
         self.generateNumberUseCase = generateNumberUseCase
-        self.calculateStrikeAndBall = calculateStrikeAndBall
+        self.calculateStrikeAndBallUseCase = calculateStrikeAndBallUseCase
     }
-
+    
+    /// 정답 생성 함수
     func generateAnswer() {
         answer = generateNumberUseCase.numbers(
             range: Config.numberRange,
@@ -34,10 +36,10 @@ class GameViewModel {
             return
         }
 
-        let result = calculateStrikeAndBall.result(numbers: numbers, answer: answer)
+        let result = calculateStrikeAndball(numbers: numbers, answer: answer)
 
         onStrikeAndBallCalculated?(trimmed)
-        strikeAndBallResult(result: result)
+        strikeAndBallResult(result: result, attemptCount: attemptCount)
     }
 
     /// 파싱된 입력값을 검증하는 함수
@@ -57,11 +59,26 @@ class GameViewModel {
         return (trimmed, numbers)
     }
 
+    /// Strike와 Ball 개수 계산 함수
+    /// - Parameters:
+    ///   - numbers: 사용자 입력 숫자
+    ///   - answer: 정답 숫자
+    /// - Returns: Strike와 Ball 개수 튜플
+    private func calculateStrikeAndball(numbers: [Int], answer: [Int]) -> (strike: Int, ball: Int) {
+        increaseAttemptCount()
+        return calculateStrikeAndBallUseCase.result(numbers: numbers, answer: answer)
+    }
+    
+    /// 시도 횟수 증가 함수
+    private func increaseAttemptCount() {
+        attemptCount += 1
+    }
+
     /// 사용자 입력값에 대한 결과 처리 함수
     /// - Parameter result: Strike와 Ball 개수
-    private func strikeAndBallResult(result: (strike: Int, ball: Int)) {
+    private func strikeAndBallResult(result: (strike: Int, ball: Int), attemptCount: Int) {
         if isGameOver(strike: result.strike) {
-            onGameOver?()
+            onGameOver?(attemptCount)
         } else if result == (0, 0) {
             onNothingHint?()
         } else {

@@ -36,8 +36,8 @@ class GameView {
     }
     
     /// 정답 안내 메시지 출력 함수
-    func showGameClearMessage() {
-        print(Messages.GameView.gameClear)
+    func showGameClearMessage(attemptCount: Int) {
+        print(Messages.GameView.gameClear(attemptCount))
     }
 }
 
