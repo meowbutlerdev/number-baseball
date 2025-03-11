@@ -1,3 +1,5 @@
+import Darwin
+
 class MainViewController {
     private let mainViewModel: MainViewModel
     private let mainView: MainView
@@ -36,6 +38,9 @@ class MainViewController {
 
             let gameViewController = GameViewController()
             gameViewController.startGame()
+        case .exit:
+            mainView.showExitMessage()
+            exit(0)
         }
     }
 }
