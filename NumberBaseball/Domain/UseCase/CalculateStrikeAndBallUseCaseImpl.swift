@@ -1,4 +1,4 @@
-struct CalculateStrikeAndBall {
+struct DefaultCalculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase {
     /// 사용자 입력값과 정답 비교 함수
     /// - Parameters:
     ///   - numbers: 사용자 입력값

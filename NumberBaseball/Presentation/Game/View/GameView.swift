@@ -18,8 +18,8 @@ class GameView {
     
     /// 입력값 안내 메시지 출력 함수
     /// - Parameter numbers: 사용자 입력값
-    func showCalculateResultMessage(numbers: [Int]) {
-        print("입력한 숫자 '\(numbers)'는", terminator: " ")
+    func showCalculateResultMessage(trimmed: String) {
+        print("입력한 숫자 \(trimmed)은(는)", terminator: " ")
     }
     
     /// Strike와 Ball 개수 안내 메시지 출력 함수

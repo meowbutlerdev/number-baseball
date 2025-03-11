@@ -2,20 +2,20 @@ import Foundation
 
 class GameViewModel {
     var onInvalidInput: (() -> Void)?
-    var onStrikeAndBallCalculated: (([Int]) -> Void)?
+    var onStrikeAndBallCalculated: ((String) -> Void)?
     var onGameOver: (() -> Void)?
     var onNothingHint: (() -> Void)?
     var onStrikeAndBallHint: (((strike: Int, ball: Int)) -> Void)?
 
     private let state: State
     private let generateNumberUseCase: GenerateNumberUseCase
-    private let calculateStrikeAndBall: CalculateStrikeAndBall
+    private let calculateStrikeAndBall: CalculateStrikeAndBallUseCase
     private var answer: [Int] = []
 
     init(
         state: State = State(),
-        generateNumberUseCase: GenerateNumberUseCase = GenerateNumberUseCase(),
-        calculateStrikeAndBall: CalculateStrikeAndBall = CalculateStrikeAndBall()
+        generateNumberUseCase: GenerateNumberUseCase = DefaultGenerateNumberUseCase(),
+        calculateStrikeAndBall: CalculateStrikeAndBallUseCase = DefaultCalculateStrikeAndBallUseCase()
     ) {
         self.state = state
         self.generateNumberUseCase = generateNumberUseCase
@@ -32,29 +32,33 @@ class GameViewModel {
     /// 사용자 입력값 처리 함수
     /// - Parameter input: 사용자 입력값
     func processUserInput(_ input: String?) {
-        guard let numbers = parseUserInput(input) else {
+        guard let (trimmed, numbers) = parseUserInput(input), isValidUserInput(numbers) else {
             onInvalidInput?()
             return
         }
 
         let result = calculateStrikeAndBall.result(numbers: numbers, answer: answer)
 
-        onStrikeAndBallCalculated?(numbers)
+        onStrikeAndBallCalculated?(trimmed)
         strikeAndBallResult(result: result)
-
     }
 
-    /// 사용자 입력값을 검증하고 Int 배열로 변환하는 함수
-    /// - Parameter input: 사용자 입력값
-    /// - Returns: 변환된 Int 배열
-    private func parseUserInput(_ input: String?) -> [Int]? {
-        guard let input = input?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
 
-        let numbers = input.compactMap { $0.wholeNumberValue }
+    /// 파싱된 입력값을 검증하는 함수
+    /// - Parameter numbers: 파싱된 [Int]
+    /// - Returns: 검증 결과
+    private func isValidUserInput(_ numbers: [Int]) -> Bool {
         let isUnique = Set(numbers).count == numbers.count
-        let isValid = numbers.count == state.numberCount && isUnique
+        return numbers.count == state.numberCount && isUnique
+    }
 
-        return isValid ? numbers : nil
+    /// 사용자 입력값을 파싱하는 함수
+    /// - Parameter input: 입력값 String
+    /// - Returns: (공백제거 문자열, [Int]) 튜플
+    private func parseUserInput(_ input: String?) -> (trimmed: String, numbers: [Int])? {
+        guard let trimmed = input?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        let numbers = trimmed.compactMap { $0.wholeNumberValue }
+        return (trimmed, numbers)
     }
 
     /// 사용자 입력값에 대한 결과 처리 함수
