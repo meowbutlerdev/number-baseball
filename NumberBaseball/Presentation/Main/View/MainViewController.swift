@@ -8,6 +8,11 @@ class MainViewController {
         self.mainView = mainView
         self.mainViewModel = mainViewModel
 
+        setupBindings()
+    }
+    
+    /// 바인딩 설정 함수
+    private func setupBindings() {
         mainViewModel.onInvalidInput = { [weak self] in
             self?.mainView.showInvalidInputMessage()
             self?.requestUserInput()

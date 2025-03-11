@@ -6,6 +6,11 @@ class GameViewController {
         self.gameViewModel = gameViewModel
         self.gameView = gameView
 
+        setupBindings()
+    }
+    
+    /// 바인딩 설정 함수
+    private func setupBindings() {
         gameViewModel.onInvalidInput = { [weak self] in
             self?.gameView.showInvalidInputMessage()
             self?.requestUserInput()
