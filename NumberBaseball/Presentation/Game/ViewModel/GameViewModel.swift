@@ -2,15 +2,24 @@ import Foundation
 
 class GameViewModel {
     var onInvalidInput: (() -> Void)?
-    var onValidInput: (([Int]) -> Void)?
+    var onStrikeAndBallCalculated: (([Int]) -> Void)?
+    var onGameOver: (() -> Void)?
+    var onNothingHint: (() -> Void)?
+    var onStrikeAndBallHint: (((strike: Int, ball: Int)) -> Void)?
 
     private let state: State
     private let generateNumberUseCase: GenerateNumberUseCase
+    private let calculateStrikeAndBall: CalculateStrikeAndBall
     private var answer: [Int] = []
 
-    init(state: State = State(), generateNumberUseCase: GenerateNumberUseCase = GenerateNumberUseCase()) {
+    init(
+        state: State = State(),
+        generateNumberUseCase: GenerateNumberUseCase = GenerateNumberUseCase(),
+        calculateStrikeAndBall: CalculateStrikeAndBall = CalculateStrikeAndBall()
+    ) {
         self.state = state
         self.generateNumberUseCase = generateNumberUseCase
+        self.calculateStrikeAndBall = calculateStrikeAndBall
     }
 
     func start() {
@@ -28,7 +37,11 @@ class GameViewModel {
             return
         }
 
-        onValidInput?(numbers)
+        let result = calculateStrikeAndBall.result(numbers: numbers, answer: answer)
+
+        onStrikeAndBallCalculated?(numbers)
+        strikeAndBallResult(result: result)
+
     }
 
     /// 사용자 입력값을 검증하고 Int 배열로 변환하는 함수
@@ -42,5 +55,24 @@ class GameViewModel {
         let isValid = numbers.count == state.numberCount && isUnique
 
         return isValid ? numbers : nil
+    }
+
+    /// 사용자 입력값에 대한 결과 처리 함수
+    /// - Parameter result: Strike와 Ball 개수
+    private func strikeAndBallResult(result: (strike: Int, ball: Int)) {
+        if isGameOver(strike: result.strike) {
+            onGameOver?()
+        } else if result == (0, 0) {
+            onNothingHint?()
+        } else {
+            onStrikeAndBallHint?(result)
+        }
+    }
+
+    /// 게임 종료 여부 확인 함수
+    /// - Parameter strike: Strike 개수
+    /// - Returns: 게임 종료 여부
+    private func isGameOver(strike: Int) -> Bool {
+        return strike == state.numberCount
     }
 }

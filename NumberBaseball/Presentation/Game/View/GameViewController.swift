@@ -11,8 +11,22 @@ class GameViewController {
             self?.requestUserInput()
         }
 
-        gameViewModel.onValidInput = { [weak self] numbers in
-            self?.gameView.showUserInput(numbers)
+        gameViewModel.onStrikeAndBallCalculated = { [weak self] numbers in
+            self?.gameView.showCalculateResultMessage(numbers: numbers)
+        }
+
+        gameViewModel.onNothingHint = { [weak self] in
+            self?.gameView.showNothingHintMessage()
+            self?.requestUserInput()
+        }
+
+        gameViewModel.onStrikeAndBallHint = { [weak self] result in
+            self?.gameView.showStrikeAndBallHintMessage(strike: result.strike, ball: result.ball)
+            self?.requestUserInput()
+        }
+
+        gameViewModel.onGameOver = { [weak self] in
+            self?.gameView.showGameClearMessage()
         }
     }
 
