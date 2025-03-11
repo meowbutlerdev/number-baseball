@@ -7,25 +7,22 @@ class GameViewModel {
     var onNothingHint: (() -> Void)?
     var onStrikeAndBallHint: (((strike: Int, ball: Int)) -> Void)?
 
-    private let state: State
     private let generateNumberUseCase: GenerateNumberUseCase
     private let calculateStrikeAndBall: CalculateStrikeAndBallUseCase
     private var answer: [Int] = []
 
     init(
-        state: State = State(),
         generateNumberUseCase: GenerateNumberUseCase = DefaultGenerateNumberUseCase(),
         calculateStrikeAndBall: CalculateStrikeAndBallUseCase = DefaultCalculateStrikeAndBallUseCase()
     ) {
-        self.state = state
         self.generateNumberUseCase = generateNumberUseCase
         self.calculateStrikeAndBall = calculateStrikeAndBall
     }
 
     func start() {
         answer = generateNumberUseCase.numbers(
-            range: state.numberRange,
-            count: state.numberCount
+            range: Config.numberRange,
+            count: Config.numberCount
         )
     }
 
@@ -43,13 +40,12 @@ class GameViewModel {
         strikeAndBallResult(result: result)
     }
 
-
     /// 파싱된 입력값을 검증하는 함수
     /// - Parameter numbers: 파싱된 [Int]
     /// - Returns: 검증 결과
     private func isValidUserInput(_ numbers: [Int]) -> Bool {
         let isUnique = Set(numbers).count == numbers.count
-        return numbers.count == state.numberCount && isUnique
+        return numbers.count == Config.numberCount && isUnique
     }
 
     /// 사용자 입력값을 파싱하는 함수
@@ -77,6 +73,6 @@ class GameViewModel {
     /// - Parameter strike: Strike 개수
     /// - Returns: 게임 종료 여부
     private func isGameOver(strike: Int) -> Bool {
-        return strike == state.numberCount
+        return strike == Config.numberCount
     }
 }
