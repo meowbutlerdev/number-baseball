@@ -31,8 +31,8 @@ class GameViewController {
         }
     }
 
-    func start() {
-        gameViewModel.start()
+    func startGame() {
+        gameViewModel.generateAnswer()
         requestUserInput()
     }
 
@@ -45,6 +45,6 @@ class GameViewController {
     /// 메인 화면으로 이동하는 함수
     private func showMainView() {
         let mainViewController = MainViewController()
-        mainViewController.start()
+        mainViewController.run()
     }
 }

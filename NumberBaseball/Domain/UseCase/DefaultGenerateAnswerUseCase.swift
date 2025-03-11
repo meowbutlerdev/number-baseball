@@ -1,4 +1,4 @@
-struct DefaultGenerateNumberUseCase: GenerateNumberUseCase {
+struct DefaultGenerateAnswerUseCase: GenerateAnswerUseCase {
     /// 정답 숫자를 생성하는 함수
     /// - Parameters:
     ///   - range: 사용할 숫자의 범위

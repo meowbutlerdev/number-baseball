@@ -7,19 +7,19 @@ class GameViewModel {
     var onNothingHint: (() -> Void)?
     var onStrikeAndBallHint: (((strike: Int, ball: Int)) -> Void)?
 
-    private let generateNumberUseCase: GenerateNumberUseCase
+    private let generateNumberUseCase: GenerateAnswerUseCase
     private let calculateStrikeAndBall: CalculateStrikeAndBallUseCase
     private var answer: [Int] = []
 
     init(
-        generateNumberUseCase: GenerateNumberUseCase = DefaultGenerateNumberUseCase(),
+        generateNumberUseCase: GenerateAnswerUseCase = DefaultGenerateAnswerUseCase(),
         calculateStrikeAndBall: CalculateStrikeAndBallUseCase = DefaultCalculateStrikeAndBallUseCase()
     ) {
         self.generateNumberUseCase = generateNumberUseCase
         self.calculateStrikeAndBall = calculateStrikeAndBall
     }
 
-    func start() {
+    func generateAnswer() {
         answer = generateNumberUseCase.numbers(
             range: Config.numberRange,
             count: Config.numberCount

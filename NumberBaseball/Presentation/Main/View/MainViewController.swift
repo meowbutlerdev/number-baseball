@@ -16,7 +16,7 @@ class MainViewController {
         }
     }
 
-    func start() {
+    func run() {
         mainView.showMenu()
         requestUserInput()
     }
@@ -35,7 +35,7 @@ class MainViewController {
             mainView.showGameStartMessage()
 
             let gameViewController = GameViewController()
-            gameViewController.start()
+            gameViewController.startGame()
         }
     }
 }
