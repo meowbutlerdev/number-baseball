@@ -27,6 +27,7 @@ class GameViewController {
 
         gameViewModel.onGameOver = { [weak self] in
             self?.gameView.showGameClearMessage()
+            self?.showMainView()
         }
     }
 
@@ -39,5 +40,11 @@ class GameViewController {
     private func requestUserInput() {
         let userInput = gameView.userInput()
         gameViewModel.processUserInput(userInput)
+    }
+
+    /// 메인 화면으로 이동하는 함수
+    private func showMainView() {
+        let mainViewController = MainViewController()
+        mainViewController.start()
     }
 }
