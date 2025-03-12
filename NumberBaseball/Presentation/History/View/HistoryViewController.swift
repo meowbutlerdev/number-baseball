@@ -1,13 +1,18 @@
 import Foundation
 
 class HistoryViewController {
+    private let coordinator: AppCoordinator
+
     private let historyViewModel: HistoryViewModel
     private let historyView: HistoryView
 
     init(
+        coordinator: AppCoordinator,
         historyViewModel: HistoryViewModel = HistoryViewModel(),
         historyView: HistoryView = HistoryView()
     ) {
+        self.coordinator = coordinator
+
         self.historyViewModel = historyViewModel
         self.historyView = historyView
 
@@ -20,9 +25,13 @@ class HistoryViewController {
             self?.showHistories(formattedHistories)
         }
     }
-    
+
+    func show() {
+        loadHistories()
+    }
+
     /// 게임 기록 불러오는 함수
-    func loadHistories() {
+    private func loadHistories() {
         historyViewModel.loadHistories()
     }
     
@@ -34,7 +43,7 @@ class HistoryViewController {
         formattedHistories.forEach { formattedHistory in
             historyView.showHistories(date: formattedHistory.date, attemptCount: formattedHistory.attemptCount)
         }
-        
+
         historyView.showHistoryFooter()
 
         showMainView()
@@ -42,7 +51,6 @@ class HistoryViewController {
 
     /// 메인 화면으로 이동하는 함수
     private func showMainView() {
-        let mainViewController = MainViewController()
-        mainViewController.run()
+        coordinator.showMainView()
     }
 }

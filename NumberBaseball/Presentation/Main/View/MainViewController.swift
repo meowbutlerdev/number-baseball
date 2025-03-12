@@ -1,10 +1,18 @@
 import Darwin
 
 class MainViewController {
+    private let coordinator: AppCoordinator
+
     private let mainViewModel: MainViewModel
     private let mainView: MainView
 
-    init(mainView: MainView = MainView(), mainViewModel: MainViewModel = MainViewModel()) {
+    init(
+        coordinator: AppCoordinator,
+        mainView: MainView = MainView(),
+        mainViewModel: MainViewModel = MainViewModel()
+    ) {
+        self.coordinator = coordinator
+
         self.mainView = mainView
         self.mainViewModel = mainViewModel
 
@@ -23,7 +31,7 @@ class MainViewController {
         }
     }
 
-    func run() {
+    func show() {
         mainView.showMenu()
         requestUserInput()
     }
@@ -40,12 +48,9 @@ class MainViewController {
         switch selectedMenu {
         case .startGame:
             mainView.showGameStartMessage()
-
-            let gameViewController = GameViewController()
-            gameViewController.startGame()
+            coordinator.showGameView()
         case .history:
-            let historyViewController = HistoryViewController()
-            historyViewController.loadHistories()
+            coordinator.showHistoryView()
         case .exit:
             mainView.showExitMessage()
             exit(0)

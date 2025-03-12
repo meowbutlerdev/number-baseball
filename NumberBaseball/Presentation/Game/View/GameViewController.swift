@@ -1,8 +1,16 @@
 class GameViewController {
+    private let coordinator: AppCoordinator
+
     private let gameViewModel: GameViewModel
     private let gameView: GameView
 
-    init(gameViewModel: GameViewModel = GameViewModel(), gameView: GameView = GameView()) {
+    init(
+        coordinator: AppCoordinator,
+        gameViewModel: GameViewModel = GameViewModel(),
+        gameView: GameView = GameView()
+    ) {
+        self.coordinator = coordinator
+
         self.gameViewModel = gameViewModel
         self.gameView = gameView
 
@@ -36,7 +44,7 @@ class GameViewController {
         }
     }
 
-    func startGame() {
+    func show() {
         gameViewModel.generateAnswer()
         requestUserInput()
     }
@@ -49,7 +57,6 @@ class GameViewController {
 
     /// 메인 화면으로 이동하는 함수
     private func showMainView() {
-        let mainViewController = MainViewController()
-        mainViewController.run()
+        coordinator.showMainView()
     }
 }

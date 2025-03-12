@@ -1,2 +1,2 @@
-let mainViewController = MainViewController()
-mainViewController.run()
+let coordinator = AppCoordinator()
+coordinator.run()
