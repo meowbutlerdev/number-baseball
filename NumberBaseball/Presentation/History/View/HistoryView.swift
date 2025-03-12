@@ -3,7 +3,11 @@ class HistoryView {
     func showHistoryHeader() {
         print(Messages.HistoryView.header)
     }
-    
+
+    func showNoHistoryMessage() {
+        print(Messages.HistoryView.noHistory)
+    }
+
     /// 게임 기록 출력 함수
     /// - Parameters:
     ///   - date: 포맷팅된 날짜

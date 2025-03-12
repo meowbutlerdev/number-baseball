@@ -21,6 +21,10 @@ class HistoryViewController {
 
     /// 바인딩 설정 함수
     private func setupBindings() {
+        historyViewModel.onNoHistory = { [weak self] in
+            self?.showNoHistory()
+        }
+
         historyViewModel.onHistoryUpdated = { [weak self] formattedHistories in
             self?.showHistories(formattedHistories)
         }
@@ -35,6 +39,15 @@ class HistoryViewController {
         historyViewModel.loadHistories()
     }
     
+    /// 게임 기록 없을 때 출력 함수
+    private func showNoHistory() {
+        historyView.showHistoryHeader()
+        historyView.showNoHistoryMessage()
+        historyView.showHistoryFooter()
+
+        showMainView()
+    }
+
     /// 게임 기록 출력 함수
     /// - Parameter formattedHistories: 날짜 포맷 적용된 게임 기록들
     private func showHistories(_ formattedHistories: [(date: String, attemptCount: Int)]) {

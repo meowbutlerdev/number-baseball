@@ -2,6 +2,7 @@ import Foundation
 
 class HistoryViewModel {
     var onHistoryUpdated: (([(date: String, attemptCount: Int)]) -> Void)?
+    var onNoHistory: (() -> Void)?
 
     private let loadHistoryUseCase: LoadHistoryUseCase
 
@@ -12,9 +13,12 @@ class HistoryViewModel {
     /// 게임 기록 불러오는 함수
     func loadHistories() {
         let histories = loadHistoryUseCase.loadHistories()
-        let formattedHistories = histories.map { formattedHistory($0) }
-
-        onHistoryUpdated?(formattedHistories)
+        if histories.isEmpty {
+            onNoHistory?()
+        } else {
+            let formattedHistories = histories.map { formattedHistory($0) }
+            onHistoryUpdated?(formattedHistories)
+        }
     }
 
     /// 게임 기록 포맷 함수

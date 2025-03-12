@@ -38,6 +38,8 @@ enum Messages {
             """
         static let footer = "***************************************************************"
 
+        static let noHistory = "                     저장된 기록이 없어요!"
+
         static func history(_ formattedDate: String, _ attemptCount: Int) -> String {
             return "  🎯 \(formattedDate)   ⎮   \(attemptCount)회 시도"
         }
