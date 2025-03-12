@@ -13,8 +13,8 @@ class GameViewModel {
     private var attemptCount = 0
 
     init(
-        generateNumberUseCase: GenerateAnswerUseCase = DefaultGenerateAnswerUseCase(),
-        calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase = DefaultCalculateStrikeAndBallUseCase()
+        generateNumberUseCase: GenerateAnswerUseCase = GenerateAnswerUseCase(),
+        calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase = CalculateStrikeAndBallUseCase()
     ) {
         self.generateNumberUseCase = generateNumberUseCase
         self.calculateStrikeAndBallUseCase = calculateStrikeAndBallUseCase
