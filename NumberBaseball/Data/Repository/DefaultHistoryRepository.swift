@@ -1,5 +1,5 @@
-class HistoryRepository {
-    static let shared = HistoryRepository()
+class DefaultHistoryRepository: HistoryRepository {
+    static let shared = DefaultHistoryRepository()
 
     private var histories: [History] = []
 

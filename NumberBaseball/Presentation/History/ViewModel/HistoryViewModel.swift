@@ -5,7 +5,7 @@ class HistoryViewModel {
 
     private let historyRepository: HistoryRepository
 
-    init(historyRepository: HistoryRepository = HistoryRepository.shared) {
+    init(historyRepository: HistoryRepository = DefaultHistoryRepository.shared) {
         self.historyRepository = historyRepository
     }
 
