@@ -1,4 +1,10 @@
 class AppCoordinator {
+    private let container: DependencyContainer
+
+    init(dependencyContainer: DependencyContainer = DependencyContainer()) {
+        self.container = dependencyContainer
+    }
+
     func run() {
         showMainView()
     }
@@ -9,12 +15,17 @@ class AppCoordinator {
     }
 
     func showGameView() {
-        let gameViewController = GameViewController(coordinator: self)
+        let gameViewModel = GameViewModel(saveHistoryUseCase: container.saveHistoryUseCase)
+        let gameViewController = GameViewController(coordinator: self, gameViewModel: gameViewModel)
         gameViewController.show()
     }
 
     func showHistoryView() {
-        let historyViewController = HistoryViewController(coordinator: self)
+        let historyViewModel = HistoryViewModel(loadHistoryUseCase: container.loadHistoryUseCase)
+        let historyViewController = HistoryViewController(
+            coordinator: self,
+            historyViewModel: historyViewModel
+        )
         historyViewController.show()
     }
 }

@@ -7,15 +7,19 @@ class GameViewModel {
     var onNothingHint: (() -> Void)?
     var onStrikeAndBallHint: (((strike: Int, ball: Int)) -> Void)?
 
+    private let saveHistoryUseCase: SaveHistoryUseCase
     private let generateNumberUseCase: GenerateAnswerUseCase
     private let calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase
+
     private var answer: [Int] = []
     private var attemptCount = 0
 
     init(
+        saveHistoryUseCase: SaveHistoryUseCase,
         generateNumberUseCase: GenerateAnswerUseCase = GenerateAnswerUseCase(),
         calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase = CalculateStrikeAndBallUseCase()
     ) {
+        self.saveHistoryUseCase = saveHistoryUseCase
         self.generateNumberUseCase = generateNumberUseCase
         self.calculateStrikeAndBallUseCase = calculateStrikeAndBallUseCase
     }
@@ -97,7 +101,6 @@ class GameViewModel {
     /// 게임 기록 저장 함수
     /// - Parameter attemptCount: 시도 횟수
     private func saveGameResult(_ attemptCount: Int) {
-        let historyViewModel = HistoryViewModel()
-        historyViewModel.addHistory(attemptCount: attemptCount)
+        saveHistoryUseCase.addHistory(attemptCount: attemptCount)
     }
 }

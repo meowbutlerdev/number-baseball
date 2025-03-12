@@ -1,9 +1,5 @@
 class DefaultHistoryRepository: HistoryRepository {
-    static let shared = DefaultHistoryRepository()
-
     private var histories: [History] = []
-
-    private init() {}
 
     /// 게임 기록 저장 함수
     /// - Parameter history: History Model

@@ -3,7 +3,7 @@ import Foundation
 struct SaveHistoryUseCase {
     private let historyRepository: HistoryRepository
 
-    init(historyRepository: HistoryRepository = DefaultHistoryRepository.shared) {
+    init(historyRepository: HistoryRepository) {
         self.historyRepository = historyRepository
     }
 

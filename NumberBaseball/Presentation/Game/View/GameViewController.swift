@@ -6,7 +6,7 @@ class GameViewController {
 
     init(
         coordinator: AppCoordinator,
-        gameViewModel: GameViewModel = GameViewModel(),
+        gameViewModel: GameViewModel,
         gameView: GameView = GameView()
     ) {
         self.coordinator = coordinator

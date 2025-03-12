@@ -8,7 +8,7 @@ class HistoryViewController {
 
     init(
         coordinator: AppCoordinator,
-        historyViewModel: HistoryViewModel = HistoryViewModel(),
+        historyViewModel: HistoryViewModel,
         historyView: HistoryView = HistoryView()
     ) {
         self.coordinator = coordinator
