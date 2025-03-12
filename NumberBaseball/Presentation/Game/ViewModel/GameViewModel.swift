@@ -78,6 +78,7 @@ class GameViewModel {
     /// - Parameter result: Strike와 Ball 개수
     private func strikeAndBallResult(result: (strike: Int, ball: Int), attemptCount: Int) {
         if isGameOver(strike: result.strike) {
+            saveGameResult(attemptCount)
             onGameOver?(attemptCount)
         } else if result == (0, 0) {
             onNothingHint?()
@@ -91,5 +92,12 @@ class GameViewModel {
     /// - Returns: 게임 종료 여부
     private func isGameOver(strike: Int) -> Bool {
         return strike == Config.numberCount
+    }
+    
+    /// 게임 기록 저장 함수
+    /// - Parameter attemptCount: 시도 횟수
+    private func saveGameResult(_ attemptCount: Int) {
+        let historyViewModel = HistoryViewModel()
+        historyViewModel.addHistory(attemptCount: attemptCount)
     }
 }

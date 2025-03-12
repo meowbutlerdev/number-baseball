@@ -2,10 +2,11 @@ enum Messages {
     enum MainView {
         static let menu = """
             ***************************************************************
-                                  ⚾ NUMBER BASEBALL ⚾                  
+                                ⚾ NUMBER BASEBALL ⚾
             ---------------------------------------------------------------
               1️⃣  게임 시작하기
-              2️⃣  종료하기
+              2️⃣  게임 기록 보기
+              3️⃣  종료하기
             ***************************************************************
             """
         static let menuSelection = "메뉴를 입력하세요:"
@@ -27,6 +28,18 @@ enum Messages {
 
         static func gameClear(_ attemptCount: Int) -> String {
             return "정답입니다.\n\(attemptCount)번 만에 정답을 맞추셨습니다!"
+        }
+    }
+
+    enum HistoryView {
+        static let header = """
+            ***************************************************************
+                                   📋 게임 기록 📋
+            """
+        static let footer = "***************************************************************"
+
+        static func history(_ formattedDate: String, _ attemptCount: Int) -> String {
+            return "  🎯 \(formattedDate)   ⎮   \(attemptCount)회 시도"
         }
     }
 

@@ -43,6 +43,9 @@ class MainViewController {
 
             let gameViewController = GameViewController()
             gameViewController.startGame()
+        case .history:
+            let historyViewController = HistoryViewController()
+            historyViewController.loadHistories()
         case .exit:
             mainView.showExitMessage()
             exit(0)
