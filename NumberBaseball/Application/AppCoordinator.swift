@@ -1,11 +1,9 @@
 class AppCoordinator {
     private let container: DependencyContainer
 
-    init(dependencyContainer: DependencyContainer = DependencyContainer()) {
-        self.container = dependencyContainer
-    }
+    init(container: DependencyContainer = DependencyContainer()) {
+        self.container = container
 
-    func run() {
         showMainView()
     }
 

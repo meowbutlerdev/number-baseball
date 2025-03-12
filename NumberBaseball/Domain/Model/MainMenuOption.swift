@@ -7,6 +7,6 @@ enum MainMenuOption: Int {
     /// - Parameter input: 메뉴 번호
     /// - Returns: enum 케이스
     static func from(_ input: Int) -> MainMenuOption? {
-        return MainMenuOption(rawValue: input)
+        MainMenuOption(rawValue: input)
     }
 }

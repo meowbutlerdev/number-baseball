@@ -10,6 +10,6 @@ class DefaultHistoryRepository: HistoryRepository {
     /// 게임 기록 fetch 함수
     /// - Returns: History 배열
     func fetchHistory() -> [History] {
-        return histories
+        histories
     }
 }

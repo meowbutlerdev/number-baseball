@@ -6,6 +6,12 @@ class HistoryViewModel {
 
     private let loadHistoryUseCase: LoadHistoryUseCase
 
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter
+    }()
+
     init(loadHistoryUseCase: LoadHistoryUseCase) {
         self.loadHistoryUseCase = loadHistoryUseCase
     }
@@ -25,16 +31,13 @@ class HistoryViewModel {
     /// - Parameter history: History
     /// - Returns: 포맷팅된 date, attemptCount 튜플
     private func formattedHistory(_ history: History) -> (date: String, attemptCount: Int) {
-        return (date: formattedDate(history.date), attemptCount: history.attemptCount)
+        (date: formattedDate(history.date), attemptCount: history.attemptCount)
     }
 
     /// 날짜 포맷 함수
     /// - Parameter date: Date
     /// - Returns: 포맷팅된 날짜 문자열
     private func formattedDate(_ date: Date) -> String{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
-        return dateFormatter.string(from: date)
+        dateFormatter.string(from: date)
     }
 }

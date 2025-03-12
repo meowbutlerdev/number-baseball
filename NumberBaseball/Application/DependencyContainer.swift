@@ -4,8 +4,8 @@ class DependencyContainer {
     let loadHistoryUseCase: LoadHistoryUseCase
 
     init() {
-        self.historyRepository = DefaultHistoryRepository()
-        self.saveHistoryUseCase = SaveHistoryUseCase(historyRepository: historyRepository)
-        self.loadHistoryUseCase = LoadHistoryUseCase(historyRepository: historyRepository)
+        historyRepository = DefaultHistoryRepository()
+        saveHistoryUseCase = SaveHistoryUseCase(historyRepository: historyRepository)
+        loadHistoryUseCase = LoadHistoryUseCase(historyRepository: historyRepository)
     }
 }

@@ -40,6 +40,8 @@ class GameViewModel {
             return
         }
 
+        increaseAttemptCount()
+
         let result = calculateStrikeAndball(numbers: numbers, answer: answer)
 
         onStrikeAndBallCalculated?(trimmed)
@@ -69,8 +71,7 @@ class GameViewModel {
     ///   - answer: 정답 숫자
     /// - Returns: Strike와 Ball 개수 튜플
     private func calculateStrikeAndball(numbers: [Int], answer: [Int]) -> (strike: Int, ball: Int) {
-        increaseAttemptCount()
-        return calculateStrikeAndBallUseCase.result(numbers: numbers, answer: answer)
+        calculateStrikeAndBallUseCase.result(numbers: numbers, answer: answer)
     }
     
     /// 시도 횟수 증가 함수
@@ -95,7 +96,7 @@ class GameViewModel {
     /// - Parameter strike: Strike 개수
     /// - Returns: 게임 종료 여부
     private func isGameOver(strike: Int) -> Bool {
-        return strike == Config.numberCount
+        strike == Config.numberCount
     }
     
     /// 게임 기록 저장 함수
