@@ -3,15 +3,20 @@ import Foundation
 class HistoryViewModel {
     var onHistoryUpdated: (([(date: String, attemptCount: Int)]) -> Void)?
 
-    private let historyRepository: HistoryRepository
+    private let saveHistoryUseCase: SaveHistoryUseCase
+    private let loadHistoryUseCase: LoadHistoryUseCase
 
-    init(historyRepository: HistoryRepository = DefaultHistoryRepository.shared) {
-        self.historyRepository = historyRepository
+    init(
+        saveHistoryUseCase: SaveHistoryUseCase = SaveHistoryUseCase(),
+        loadHistoryUseCase: LoadHistoryUseCase = LoadHistoryUseCase()
+    ) {
+        self.saveHistoryUseCase = saveHistoryUseCase
+        self.loadHistoryUseCase = loadHistoryUseCase
     }
 
     /// 게임 기록 불러오는 함수
     func loadHistories() {
-        let histories = historyRepository.fetchHistory()
+        let histories = loadHistoryUseCase.loadHistories()
         let formattedHistories = histories.map { formattedHistory($0) }
 
         onHistoryUpdated?(formattedHistories)
@@ -37,7 +42,6 @@ class HistoryViewModel {
     /// 게임 기록 저장 함수
     /// - Parameter attemptCount: 시도 횟수
     func addHistory(attemptCount: Int) {
-        let history = History(date: Date(), attemptCount: attemptCount)
-        historyRepository.saveHistory(history: history)
+        saveHistoryUseCase.addHistory(attemptCount: attemptCount)
     }
 }
