@@ -58,7 +58,7 @@ class GameViewModel {
     /// - Parameter input: 입력값 String
     /// - Returns: (공백제거 문자열, [Int]) 튜플
     private func parseUserInput(_ input: String?) -> (trimmed: String, numbers: [Int])? {
-        guard let trimmed = input?.trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        guard let trimmed = input?.replacingOccurrences(of: " ", with: "") else { return nil }
         let numbers = trimmed.compactMap { $0.wholeNumberValue }
         return (trimmed, numbers)
     }

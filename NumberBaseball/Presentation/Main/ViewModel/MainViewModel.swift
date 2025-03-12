@@ -19,7 +19,7 @@ class MainViewModel {
     /// - Parameter input: 입력값 String
     /// - Returns: enum 케이스
     private func parseUserInput(_ input: String?) -> MainMenuOption? {
-        guard let input = input?.trimmingCharacters(in: .whitespacesAndNewlines),
+        guard let input =  input?.replacingOccurrences(of: " ", with: ""),
               let inputNumber = Int(input),
               let selectedMenu = MainMenuOption.from(inputNumber) else {
             return nil
