@@ -18,8 +18,7 @@
 5. 정답을 맞히면 게임 종료
 
 # 프로젝트 구조
-```
-NumberBaseball/
+```NumberBaseball/
 ├── Appication/
 │   ├── AppCoordinator.swift
 │   ├── DependencyContainer.swift
@@ -29,17 +28,17 @@ NumberBaseball/
 │   │   └── DefaultHistoryRepository.swift
 ├── Domain/
 │   ├── Model/
-│   │   ├── Config.swift
+│   │   ├── GameConfig.swift
 │   │   ├── History.swift
 │   │   └── MainMenuOption.swift
 │   ├── Repository/
 │   │   └── HistoryRepository.swift
 │   ├── UseCase/
 │   │   ├── Game/
-│   │   │   ├── CalculateStrikeAndBallUseCase.swift
-│   │   │   └── GenerateAnswerUseCase.swift
+│   │   │   ├── AnswerGenerationUseCase.swift
+│   │   │   └── StrikeBallCalculationUseCase.swift
 │   │   └── History/
-│   │       ├── LoadHistoryUseCase.swift
+│   │       ├── FetchHistoryUseCase.swift
 │   │       └── SaveHistoryUseCase.swift
 └── Presentation/
     ├── Game/
