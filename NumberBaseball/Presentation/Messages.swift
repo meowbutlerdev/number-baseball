@@ -26,8 +26,8 @@ enum Messages {
             "\(strike) Strike, \(ball) Ball 입니다."
         }
 
-        static func gameClear(_ attemptCount: Int) -> String {
-            "정답입니다.\n\(attemptCount)번 만에 정답을 맞추셨습니다!"
+        static func gameClear(_ attempts: Int) -> String {
+            "정답입니다.\n\(attempts)번 만에 정답을 맞추셨습니다!"
         }
     }
 
@@ -40,8 +40,8 @@ enum Messages {
 
         static let noHistory = "                     저장된 기록이 없어요!"
 
-        static func history(_ formattedDate: String, _ attemptCount: Int) -> String {
-            "  🎯 \(formattedDate)   ⎮   \(attemptCount)회 시도"
+        static func history(_ formattedDate: String, _ attempts: Int) -> String {
+            "  🎯 \(formattedDate)   ⎮   \(attempts)회 시도"
         }
     }
 

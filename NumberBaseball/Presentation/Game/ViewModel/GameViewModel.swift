@@ -1,94 +1,94 @@
 import Foundation
 
 class GameViewModel {
-    var onInvalidInput: (() -> Void)?
-    var onStrikeAndBallCalculated: ((String) -> Void)?
+    var onInputInvalid: (() -> Void)?
+    var onInputResult: ((String) -> Void)?
     var onGameOver: ((Int) -> Void)?
-    var onNothingHint: (() -> Void)?
-    var onStrikeAndBallHint: (((strike: Int, ball: Int)) -> Void)?
+    var onNoMatchHint: (() -> Void)?
+    var onStrikeBallHint: (((strike: Int, ball: Int)) -> Void)?
 
     private let saveHistoryUseCase: SaveHistoryUseCase
-    private let generateNumberUseCase: GenerateAnswerUseCase
-    private let calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase
+    private let answerGenerationUseCase: AnswerGenerationUseCase
+    private let strikeBallCalculationUseCase: StrikeBallCalculationUseCase
 
     private var answer: [Int] = []
-    private var attemptCount = 0
+    private var attempts = 0
 
     init(
         saveHistoryUseCase: SaveHistoryUseCase,
-        generateNumberUseCase: GenerateAnswerUseCase = GenerateAnswerUseCase(),
-        calculateStrikeAndBallUseCase: CalculateStrikeAndBallUseCase = CalculateStrikeAndBallUseCase()
+        answerGenerationUseCase: AnswerGenerationUseCase = AnswerGenerationUseCase(),
+        strikeBallCalculationUseCase: StrikeBallCalculationUseCase = StrikeBallCalculationUseCase()
     ) {
         self.saveHistoryUseCase = saveHistoryUseCase
-        self.generateNumberUseCase = generateNumberUseCase
-        self.calculateStrikeAndBallUseCase = calculateStrikeAndBallUseCase
+        self.answerGenerationUseCase = answerGenerationUseCase
+        self.strikeBallCalculationUseCase = strikeBallCalculationUseCase
     }
     
     /// 정답 생성 함수
     func generateAnswer() {
-        answer = generateNumberUseCase.numbers(
-            range: Config.numberRange,
-            count: Config.numberCount
+        answer = answerGenerationUseCase.generateAnswer(
+            range: GameConfig.numberRange,
+            count: GameConfig.numberCount
         )
     }
 
     /// 사용자 입력값 처리 함수
-    /// - Parameter input: 사용자 입력값
-    func processUserInput(_ input: String?) {
-        guard let (trimmed, numbers) = parseUserInput(input), isValidUserInput(numbers) else {
-            onInvalidInput?()
+    /// - Parameter userInput: 사용자 입력값
+    func handleUserInput(_ userInput: String?) {
+        guard let (trimmedInput, userNumbers) = parseUserInput(userInput), isValidUserInput(userNumbers) else {
+            onInputInvalid?()
             return
         }
 
-        increaseAttemptCount()
+        increaseAttempts()
 
-        let result = calculateStrikeAndball(numbers: numbers, answer: answer)
+        let result = evaluate(userNumbers: userNumbers, answer: answer)
 
-        onStrikeAndBallCalculated?(trimmed)
-        strikeAndBallResult(result: result, attemptCount: attemptCount)
+        onInputResult?(trimmedInput)
+        handleResult(result: result)
     }
 
     /// 파싱된 입력값을 검증하는 함수
-    /// - Parameter numbers: 파싱된 [Int]
+    /// - Parameter userNumbers: 파싱된 [Int]
     /// - Returns: 검증 결과
-    private func isValidUserInput(_ numbers: [Int]) -> Bool {
-        let isUnique = Set(numbers).count == numbers.count
-        return numbers.count == Config.numberCount && isUnique
+    private func isValidUserInput(_ userNumbers: [Int]) -> Bool {
+        let isUnique = Set(userNumbers).count == userNumbers.count
+        return userNumbers.count == GameConfig.numberCount && isUnique
     }
 
     /// 사용자 입력값을 파싱하는 함수
-    /// - Parameter input: 입력값 String
+    /// - Parameter userInput: 입력값 String
     /// - Returns: (공백제거 문자열, [Int]) 튜플
-    private func parseUserInput(_ input: String?) -> (trimmed: String, numbers: [Int])? {
-        guard let trimmed = input?.replacingOccurrences(of: " ", with: "") else { return nil }
-        let numbers = trimmed.compactMap { $0.wholeNumberValue }
-        return (trimmed, numbers)
+    private func parseUserInput(_ userInput: String?) -> (trimmedInput: String, userNumbers: [Int])? {
+        guard let trimmedInput = userInput?.replacingOccurrences(of: " ", with: "") else { return nil }
+        let userNumbers = trimmedInput.compactMap { $0.wholeNumberValue }
+        return (trimmedInput, userNumbers)
     }
 
     /// Strike와 Ball 개수 계산 함수
     /// - Parameters:
-    ///   - numbers: 사용자 입력 숫자
+    ///   - userNumbers: 사용자 입력 숫자
     ///   - answer: 정답 숫자
     /// - Returns: Strike와 Ball 개수 튜플
-    private func calculateStrikeAndball(numbers: [Int], answer: [Int]) -> (strike: Int, ball: Int) {
-        calculateStrikeAndBallUseCase.result(numbers: numbers, answer: answer)
+    private func evaluate(userNumbers: [Int], answer: [Int]) -> (strike: Int, ball: Int) {
+        strikeBallCalculationUseCase.result(userNumbers: userNumbers, answer: answer)
     }
     
     /// 시도 횟수 증가 함수
-    private func increaseAttemptCount() {
-        attemptCount += 1
+    private func increaseAttempts() {
+        attempts += 1
     }
 
     /// 사용자 입력값에 대한 결과 처리 함수
     /// - Parameter result: Strike와 Ball 개수
-    private func strikeAndBallResult(result: (strike: Int, ball: Int), attemptCount: Int) {
+    private func handleResult(result: (strike: Int, ball: Int)) {
         if isGameOver(strike: result.strike) {
-            saveGameResult(attemptCount)
-            onGameOver?(attemptCount)
+            saveGameResult()
+            onGameOver?(attempts)
         } else if result == (0, 0) {
-            onNothingHint?()
+            onNoMatchHint?()
         } else {
-            onStrikeAndBallHint?(result)
+            onStrikeBallHint?(result)
         }
     }
 
@@ -96,12 +96,12 @@ class GameViewModel {
     /// - Parameter strike: Strike 개수
     /// - Returns: 게임 종료 여부
     private func isGameOver(strike: Int) -> Bool {
-        strike == Config.numberCount
+        strike == GameConfig.numberCount
     }
     
     /// 게임 기록 저장 함수
-    /// - Parameter attemptCount: 시도 횟수
-    private func saveGameResult(_ attemptCount: Int) {
-        saveHistoryUseCase.addHistory(attemptCount: attemptCount)
+    /// - Parameter attempts: 시도 횟수
+    private func saveGameResult() {
+        saveHistoryUseCase.save(attempts: attempts)
     }
 }

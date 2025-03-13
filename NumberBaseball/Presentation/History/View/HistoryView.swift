@@ -11,9 +11,9 @@ class HistoryView {
     /// 게임 기록 출력 함수
     /// - Parameters:
     ///   - date: 포맷팅된 날짜
-    ///   - attemptCount: 시도 횟수
-    func showHistories(date: String, attemptCount: Int) {
-        print(Messages.HistoryView.history(date, attemptCount))
+    ///   - attempts: 시도 횟수
+    func showHistories(date: String, attempts: Int) {
+        print(Messages.HistoryView.history(date, attempts))
     }
     
     /// 게임 기록 화면 푸터 출력 함수

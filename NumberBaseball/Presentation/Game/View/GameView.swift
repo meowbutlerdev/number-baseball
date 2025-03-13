@@ -17,9 +17,9 @@ class GameView {
     }
     
     /// 입력값 안내 메시지 출력 함수
-    /// - Parameter numbers: 사용자 입력값
-    func showCalculateResultMessage(trimmed: String) {
-        print(Messages.GameView.calculateResult(trimmed), terminator: Messages.Common.terminator)
+    /// - Parameter trimmedInput: 공백 제거된 사용자 입력값
+    func showCalculateResultMessage(trimmedInput: String) {
+        print(Messages.GameView.calculateResult(trimmedInput), terminator: Messages.Common.terminator)
     }
     
     /// Strike와 Ball 개수 안내 메시지 출력 함수
@@ -36,8 +36,7 @@ class GameView {
     }
     
     /// 정답 안내 메시지 출력 함수
-    func showGameClearMessage(attemptCount: Int) {
-        print(Messages.GameView.gameClear(attemptCount))
+    func showGameClearMessage(attempts: Int) {
+        print(Messages.GameView.gameClear(attempts))
     }
 }
-

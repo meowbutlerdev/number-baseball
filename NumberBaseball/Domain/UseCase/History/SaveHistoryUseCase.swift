@@ -1,16 +1,16 @@
 import Foundation
 
 struct SaveHistoryUseCase {
-    private let historyRepository: HistoryRepository
+    private let repository: HistoryRepository
 
-    init(historyRepository: HistoryRepository) {
-        self.historyRepository = historyRepository
+    init(repository: HistoryRepository) {
+        self.repository = repository
     }
 
     /// 게임 기록 저장 함수
-    /// - Parameter attemptCount: 시도 횟수
-    func addHistory(attemptCount: Int) {
-        let history = History(date: Date(), attemptCount: attemptCount)
-        historyRepository.saveHistory(history: history)
+    /// - Parameter attempts: 시도 횟수
+    func save(attempts: Int) {
+        let history = History(date: Date(), attempts: attempts)
+        repository.save(history: history)
     }
 }

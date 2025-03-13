@@ -21,7 +21,7 @@ class MainViewController {
     
     /// 바인딩 설정 함수
     private func setupBindings() {
-        mainViewModel.onInvalidInput = { [weak self] in
+        mainViewModel.onInputInvalid = { [weak self] in
             self?.mainView.showInvalidInputMessage()
             self?.requestUserInput()
         }
@@ -39,7 +39,7 @@ class MainViewController {
     /// 사용자 입력 요청 함수
     private func requestUserInput() {
         let userInput = mainView.userInput()
-        mainViewModel.processUserInput(userInput)
+        mainViewModel.handleUserInput(userInput)
     }
     
     /// 메뉴 핸들러 함수
@@ -48,9 +48,9 @@ class MainViewController {
         switch selectedMenu {
         case .startGame:
             mainView.showGameStartMessage()
-            coordinator.showGameView()
+            coordinator.presentGameScreen()
         case .history:
-            coordinator.showHistoryView()
+            coordinator.presentHistoryScreen()
         case .exit:
             mainView.showExitMessage()
             exit(0)

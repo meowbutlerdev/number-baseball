@@ -1,10 +1,10 @@
 import Foundation
 
 class HistoryViewModel {
-    var onHistoryUpdated: (([(date: String, attemptCount: Int)]) -> Void)?
+    var onHistoryUpdated: (([(date: String, attempts: Int)]) -> Void)?
     var onNoHistory: (() -> Void)?
 
-    private let loadHistoryUseCase: LoadHistoryUseCase
+    private let fetchHistoryUseCase: FetchHistoryUseCase
 
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -12,13 +12,13 @@ class HistoryViewModel {
         return formatter
     }()
 
-    init(loadHistoryUseCase: LoadHistoryUseCase) {
-        self.loadHistoryUseCase = loadHistoryUseCase
+    init(fetchHistoryUseCase: FetchHistoryUseCase) {
+        self.fetchHistoryUseCase = fetchHistoryUseCase
     }
 
     /// 게임 기록 불러오는 함수
-    func loadHistories() {
-        let histories = loadHistoryUseCase.loadHistories()
+    func fetchHistories() {
+        let histories = fetchHistoryUseCase.fetchHistories()
         if histories.isEmpty {
             onNoHistory?()
         } else {
@@ -29,9 +29,9 @@ class HistoryViewModel {
 
     /// 게임 기록 포맷 함수
     /// - Parameter history: History
-    /// - Returns: 포맷팅된 date, attemptCount 튜플
-    private func formattedHistory(_ history: History) -> (date: String, attemptCount: Int) {
-        (date: formattedDate(history.date), attemptCount: history.attemptCount)
+    /// - Returns: 포맷팅된 date, attempts 튜플
+    private func formattedHistory(_ history: History) -> (date: String, attempts: Int) {
+        (date: formattedDate(history.date), attempts: history.attempts)
     }
 
     /// 날짜 포맷 함수

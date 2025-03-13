@@ -1,14 +1,14 @@
 //import Foundation
 
 class MainViewModel {
-    var onInvalidInput: (() -> Void)?
+    var onInputInvalid: (() -> Void)?
     var onMenuSelected: ((MainMenuOption) -> Void)?
     
     /// 사용자 입력 처리 함수
     /// - Parameter input: 사용자 입력값
-    func processUserInput(_ input: String?) {
+    func handleUserInput(_ input: String?) {
         guard let selectedMenu = parseUserInput(input) else {
-            onInvalidInput?()
+            onInputInvalid?()
             return
         }
 

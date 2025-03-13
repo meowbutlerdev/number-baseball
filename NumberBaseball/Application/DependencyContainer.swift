@@ -1,11 +1,11 @@
 class DependencyContainer {
     let historyRepository: HistoryRepository
     let saveHistoryUseCase: SaveHistoryUseCase
-    let loadHistoryUseCase: LoadHistoryUseCase
+    let fetchHistoryUseCase: FetchHistoryUseCase
 
     init() {
         historyRepository = DefaultHistoryRepository()
-        saveHistoryUseCase = SaveHistoryUseCase(historyRepository: historyRepository)
-        loadHistoryUseCase = LoadHistoryUseCase(historyRepository: historyRepository)
+        saveHistoryUseCase = SaveHistoryUseCase(repository: historyRepository)
+        fetchHistoryUseCase = FetchHistoryUseCase(repository: historyRepository)
     }
 }

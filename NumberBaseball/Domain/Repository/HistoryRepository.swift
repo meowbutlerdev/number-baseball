@@ -1,4 +1,4 @@
 protocol HistoryRepository {
-    func saveHistory(history: History)
-    func fetchHistory() -> [History]
+    func save(history: History)
+    func fetchHistories() -> [History]
 }

@@ -31,12 +31,12 @@ class HistoryViewController {
     }
 
     func show() {
-        loadHistories()
+        fetchHistories()
     }
 
     /// 게임 기록 불러오는 함수
-    private func loadHistories() {
-        historyViewModel.loadHistories()
+    private func fetchHistories() {
+        historyViewModel.fetchHistories()
     }
     
     /// 게임 기록 없을 때 출력 함수
@@ -45,25 +45,25 @@ class HistoryViewController {
         historyView.showNoHistoryMessage()
         historyView.showHistoryFooter()
 
-        showMainView()
+        presentMainScreen()
     }
 
     /// 게임 기록 출력 함수
     /// - Parameter formattedHistories: 날짜 포맷 적용된 게임 기록들
-    private func showHistories(_ formattedHistories: [(date: String, attemptCount: Int)]) {
+    private func showHistories(_ formattedHistories: [(date: String, attempts: Int)]) {
         historyView.showHistoryHeader()
 
         formattedHistories.forEach { formattedHistory in
-            historyView.showHistories(date: formattedHistory.date, attemptCount: formattedHistory.attemptCount)
+            historyView.showHistories(date: formattedHistory.date, attempts: formattedHistory.attempts)
         }
 
         historyView.showHistoryFooter()
 
-        showMainView()
+                presentMainScreen()
     }
 
     /// 메인 화면으로 이동하는 함수
-    private func showMainView() {
-        coordinator.showMainView()
+    private func         presentMainScreen() {
+        coordinator.presentMainScreen()
     }
 }

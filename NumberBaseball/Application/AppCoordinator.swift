@@ -4,22 +4,22 @@ class AppCoordinator {
     init(container: DependencyContainer = DependencyContainer()) {
         self.container = container
 
-        showMainView()
+        presentMainScreen()
     }
 
-    func showMainView() {
+    func presentMainScreen() {
         let mainViewController = MainViewController(coordinator: self)
         mainViewController.show()
     }
 
-    func showGameView() {
+    func presentGameScreen() {
         let gameViewModel = GameViewModel(saveHistoryUseCase: container.saveHistoryUseCase)
         let gameViewController = GameViewController(coordinator: self, gameViewModel: gameViewModel)
         gameViewController.show()
     }
 
-    func showHistoryView() {
-        let historyViewModel = HistoryViewModel(loadHistoryUseCase: container.loadHistoryUseCase)
+    func presentHistoryScreen() {
+        let historyViewModel = HistoryViewModel(fetchHistoryUseCase: container.fetchHistoryUseCase)
         let historyViewController = HistoryViewController(
             coordinator: self,
             historyViewModel: historyViewModel
